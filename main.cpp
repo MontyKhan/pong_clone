@@ -50,8 +50,8 @@ int main()
 	sf::RectangleShape ball = createBall();
 	ball.setPosition(390,float(ballPosY));
 
-	int ballVelX = 1;
-	int ballVelY = 1;
+	float ballVelX = 1.f;
+	float ballVelY = 1.f;
 
     	// run the program as long as the window is open
     	while (window.isOpen())
@@ -70,30 +70,68 @@ int main()
 		 		window.close();
 				
 			if ((event.key.code == sf::Keyboard::W) && (player.getPosition().y > 0))
-				player.move(0.f, -5.f);
+				player.move(0.f, -10.f);
 
 			if ((event.key.code == sf::Keyboard::S) && (player.getPosition().y < 500))
-				player.move(0.f, 5.f);
+				player.move(0.f, 10.f);
         	}
 
 		ball.move(float(ballVelX), float(ballVelY));
 		
-		if (ball.getPosition().y > opponent.getPosition().y)
-			opponent.move(0.f, 5.f);
-		else if (ball.getPosition().y < (opponent.getPosition().y + 100))
-			opponent.move(0.f, -5.f);
-		// player.move(0.f, float(ballVelY));
+		int mistake = rand() % 12;
+
+		switch(mistake) {
+			case 0:	// Delayed reaction, do nothing.
+			case 1:
+			case 3:
+				break;
+			case 4:	// Misread direction, go wrong way.
+			case 5:
+				if (ball.getPosition().y > opponent.getPosition().y)
+					opponent.move(0.f, -5.f);
+				else if (ball.getPosition().y < (opponent.getPosition().y + 100))
+					opponent.move(0.f, 5.f);
+				break;
+			default:
+				if (ball.getPosition().y > opponent.getPosition().y)
+					opponent.move(0.f, 5.f);
+				else if (ball.getPosition().y < (opponent.getPosition().y + 100))
+					opponent.move(0.f, -5.f);
+		}
+
+		mistake = rand() % 12;
+			
+		switch(mistake) {
+			case 0:	// Delayed reaction, do nothing.
+			case 1:
+			case 3:
+				break;
+			case 4:	// Misread direction, go wrong way.
+			case 5:
+				if (ball.getPosition().y > player.getPosition().y)
+					player.move(0.f, -5.f);
+				else if (ball.getPosition().y < (player.getPosition().y + 100))
+					player.move(0.f, 5.f);
+				break;
+			default:
+				if (ball.getPosition().y > player.getPosition().y)
+					player.move(0.f, 5.f);
+				else if (ball.getPosition().y < (player.getPosition().y + 100))
+					player.move(0.f, -5.f);
+		}
+			
+		
 
 		if (checkCollision(player, ball))
 		{
-			ballVelX *= -1;
-			ballVelY *= -1;
+			ballVelX *= -1.1;
+			ballVelY *= -1.1;
 		}
 
 		else if (checkCollision(opponent, ball))
 		{
-			ballVelX *= -1;
-			ballVelY *= -1;
+			ballVelX *= -1.1;
+			ballVelY *= -1.1;
 		}
 
 		if ((ball.getPosition().x < 0) || (ball.getPosition().x > 780))
@@ -101,8 +139,8 @@ int main()
 			ball.setPosition(390,290);
 			ballPosY = rand() % 580;
 			ball.setPosition(390,float(ballPosY));
-			ballVelX *= -1;
-			ballVelY *= -1;
+			ballVelX = 1.f;
+			ballVelY = 1.f;
 		} 
 
 		if ((ball.getPosition().y < 20) || (ball.getPosition().y > 580))
