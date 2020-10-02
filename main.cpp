@@ -77,10 +77,11 @@ int main()
         	}
 
 		ball.move(float(ballVelX), float(ballVelY));
-		if ((opponent.getPosition().y > 0) || (ballVelY > 0))
-			opponent.move(0.f, float(ballVelY));
-		if ((opponent.getPosition().y < 500) || (ballVelY < 0))
-			opponent.move(0.f, float(ballVelY));
+		
+		if (ball.getPosition().y > opponent.getPosition().y)
+			opponent.move(0.f, 5.f);
+		else if (ball.getPosition().y < (opponent.getPosition().y + 100))
+			opponent.move(0.f, -5.f);
 		// player.move(0.f, float(ballVelY));
 
 		if (checkCollision(player, ball))
